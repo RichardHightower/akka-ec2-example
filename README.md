@@ -134,7 +134,9 @@ create table UserAlias (
 
 #### Docker compose 
 * Needs to run with 1 instance of `UserTagService`
-* Needs 1 memcache instance
+* Needs 1 memcached instance
+* Needs 1 MySQL instance 
+* Need to be able to connect to `UserService`
 
 ___________
 
@@ -158,3 +160,65 @@ create table UserTags (
     "tags" : ["Blue", "Fish", "California"]
 }
 ```
+
+#### Docker compose 
+* Needs 1 memcache instance
+* Needs 1 mysql instance 
+
+
+#### Phase 0 Tasks 
+* Create gradle project for UserService, configure gradle plugin for scala
+* Create Akka HTTP REST endpoints for two POST operations.
+* Hardcode UserService to return different results for three different Users 
+* Create DSL based test 
+* Create Gatling test (maybe)
+* Use Gradle application plugin to generate application 
+* Use Packr to create UserService docker image
+* Test against docker image
+* Have UserService actor delegate to UserAlias actor to look up alias and/or create an alias and store (pretend store) it if not found
+
+### Phase 1 Tasks
+* Create MockUserTagService Actor, given a JSON config file can return different hardcoded responses (with a slight delay)
+* Create MySQL code to store and lookup generated alias. 
+* Create code to async store in cache.
+* Create docker compose file to deploy MySQL, UserService and Memcached. 
+
+### Phase 2 Tasks
+* Create gradle project for UserTagService
+* Create gradle parent project for UserService and UserTagService
+* Move MockUserTagService Actor to UserTagService and expose via Akka remoting
+* Configure UserService to use remote UserTagService
+* Use Packr to create UserTagService docker image
+* Modify docker compose file to deploy UserTagService as well as MySQL, UserService and Memcached.
+
+### Phase 4 Tasks
+* Create RDS DB
+* Create scripts to popualte schema 
+* Create scripts to create memcached 
+* Use Packr to create UserService docker image
+* Use Packr to create UserTagService docker image
+* Manually deploy UserService and UserTagService and configure in EC2
+
+### Phase 5 Tasks
+* Setup autoscale groups 
+* Setup ELB and/or ALB
+
+### Phase 6 Tasks
+* Terraform 
+* Automate all IA
+
+### Phase 7 Tasks
+* Ansible
+* Use ansible for all provisioning 
+* Setup .ssh keys for EC2 instances
+* Connect to instances with .ssh keys and setup .ssh config to give images aliases in ssh
+* Setup ansible to run ansible playbooks against instances 
+
+### Phase 8 Tasks
+* Add RocksDB, MySQL and Memcached support to UserTagService
+* Update docker compose for local integration testing
+* Update Terraform for AWS EC2 testing 
+
+### Phase 9 Tasks
+* Use ECS instead of EC2
+
