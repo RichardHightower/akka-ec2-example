@@ -42,6 +42,50 @@ The Akka remote service will look up tags associated with the user and save them
 Let's call the microservice the `UserService`. 
 Let's call the remote service the `UserTagService`. 
 
+
+___________
+
+
+## Simple Diagram
+
+```
++-----------------+             +----------------+
+|                 |             |                |
+|                 |             |                |
+|  UserTagService |             | UserService    |
+|                 <----+--------+                |
+|                 |    ^        |                |
+|                 |    |        |                |                  +---------------------+
+|                 |    |        |                |                  |                     |
++-----------------+    |        +--------------^-+                  |                     |
+                       |                       +--------------------+                     |
++------------------+   |                                            |     ELB             |
+|                  |   |        +----------------+                  |                     |
+|                  |   |        |                |                  |                     |
+|   Memcached      |   |        |                |                  |                     |
+|                  |   |        |  UserService   ^                  |                     |
+|                  |   <--------+                |                  |                     |
+|                  |   |        |                |                  |                     |
+|                  |   |        |                +------------------+                     |
++------------------+   |        +----------------+                  |                     |
+                       |                                            |                     |
+                       |                                            +-----+---------------+
+ +---------------+     |        +----------------+                        |
+ |               |     |        |                |                        |
+ |               |     |        |                |                        |
+ |  MySQL        |     |        |  UserService   |                        |
+ |               |     |        |                |                        |
+ |               |     +--------+                <------------------------+
+ |               |              |                |
+ +---------------+              |                |
+                                +----------------+
+
+```
+
+
+____________
+
+
 ### UserService
 
 Creates aliases and saves them in `MySQL` and `Memcached`. 
@@ -92,6 +136,8 @@ create table UserAlias (
 * Needs to run with 1 instance of `UserTagService`
 * Needs 1 memcache instance
 
+___________
+
 ### UserTagService
 The `UserTagService` will randomly generate tags. It will use Akka Actor scheduling to randomly generate tags after a few minutes. It will talk to an internal actor async using Akka Futures. 
 
@@ -112,40 +158,3 @@ create table UserTags (
     "tags" : ["Blue", "Fish", "California"]
 }
 ```
-
-## Simple Diagram
-
-```
-+-----------------+             +----------------+
-|                 |             |                |
-|                 |             |                |
-|  UserTagService |             | UserService    |
-|                 <----+--------+                |
-|                 |    ^        |                |
-|                 |    |        |                |                  +---------------------+
-|                 |    |        |                |                  |                     |
-+-----------------+    |        +--------------^-+                  |                     |
-                       |                       +--------------------+                     |
-+------------------+   |                                            |     ELB             |
-|                  |   |        +----------------+                  |                     |
-|                  |   |        |                |                  |                     |
-|   Memcached      |   |        |                |                  |                     |
-|                  |   |        |  UserService   ^                  |                     |
-|                  |   <--------+                |                  |                     |
-|                  |   |        |                |                  |                     |
-|                  |   |        |                +------------------+                     |
-+------------------+   |        +----------------+                  |                     |
-                       |                                            |                     |
-                       |                                            +-----+---------------+
- +---------------+     |        +----------------+                        |
- |               |     |        |                |                        |
- |               |     |        |                |                        |
- |  MySQL        |     |        |  UserService   |                        |
- |               |     |        |                |                        |
- |               |     +--------+                <------------------------+
- |               |              |                |
- +---------------+              |                |
-                                +----------------+
-
-```
-
