@@ -1,4 +1,4 @@
-# Akka EC2 Example
+# Akka EC2, ECS, Terraform, Packr, Ansible, Gradle Example
 
 The objective is just to create a simple Akka EC2 example. 
 The example is about Terraform, Packr, EC2, Docker, ECS, Docker Compose, etc. 
