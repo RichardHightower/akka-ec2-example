@@ -1,0 +1,19 @@
+apply plugin: 'scala'
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+ext {
+    scalaVersion = "2.12"
+    akkaVersion = "2.5.3"
+}
+
+dependencies {
+
+    compile "org.scala-lang:scala-library:$scalaVersion"
+    compile "com.typesafe.akka:akka-actor_$scalaVersion:$akkaVersion"
+    compile "com.typesafe.akka:akka-testkit_$scalaVersion:$akkaVersion"
+    testCompile "org.scalatest:scalatest_$scalaVersion:3.0.3"
+}
