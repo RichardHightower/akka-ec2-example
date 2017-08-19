@@ -165,8 +165,9 @@ create table UserTags (
 * Needs 1 memcache instance
 * Needs 1 mysql instance 
 
+## Phases 
 
-#### Phase 0 Tasks 
+### Phase 0 Tasks 
 * Create gradle project for UserService, configure gradle plugin for scala
 * Create Akka HTTP REST endpoints for two POST operations.
 * Hardcode UserService to return different results for three different Users 
