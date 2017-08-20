@@ -12,6 +12,14 @@ ext {
 
 dependencies {
 
+    //Added akka http
+    compile "com.typesafe.akka:akka-http_$scalaVersion:10.0.9"
+    compile "com.typesafe.akka:akka-stream_$scalaVersion:$akkaVersion"
+
+    //JSON support
+    compile "com.typesafe.akka:akka-http-spray-json_$scalaVersion:10.0.9"
+
+
     compile "org.scala-lang:scala-library:$scalaVersion"
     compile "com.typesafe.akka:akka-actor_$scalaVersion:$akkaVersion"
     compile "com.typesafe.akka:akka-testkit_$scalaVersion:$akkaVersion"
