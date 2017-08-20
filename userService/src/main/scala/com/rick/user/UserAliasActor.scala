@@ -11,10 +11,24 @@ object UserAliasActor {
 }
 
 class UserAliasActor extends Actor {
+
+  /** Map that holds mappings to response data from user id. */
+  val userIdToResponseMap: Map[String, UserResponse] = Map(
+    ("1234", UserResponse("ABC", Seq()))
+  )
+
+  /** Map that holds mappings to userId from userAlias. */
+  val userAliasMap: Map[String, String] = Map(
+    ("ABC", "1234")
+  )
+
   def receive = {
+    //Grab the sender (for tell and ask), and send a response from the map.
+    // sender refers to actor who sent the message.
     case UserId(userId) =>
-      println(s"$userId")
+      sender ! userIdToResponseMap(userId)
+
     case UserAlias(userAlias) =>
-      println(s"$userAlias")
+      sender ! userIdToResponseMap(userAliasMap(userAlias))
   }
 }
