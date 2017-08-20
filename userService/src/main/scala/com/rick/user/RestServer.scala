@@ -19,7 +19,7 @@ object RestServer extends App with JsonSupport {
   implicit val executionContext = system.dispatcher
 
   val route =
-    path("tags/userid") {
+    path("tags") {
       post {
         entity(as[UserId]) { userId =>
           complete(s"${userId.userId}")
