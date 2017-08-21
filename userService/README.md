@@ -57,3 +57,6 @@ http://doc.akka.io/docs/akka/current/scala/futures.html
 
 Spray
 http://doc.akka.io/docs/akka-http/current/scala/http/common/json-support.html#akka-http-spray-json
+
+Testing examples
+http://blog.madhukaraphatak.com/akka-http-testing/

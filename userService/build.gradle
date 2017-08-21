@@ -8,16 +8,18 @@ repositories {
 ext {
     scalaVersion = "2.12"
     akkaVersion = "2.5.3"
+    akkaHttpVersion = "10.0.9"
 }
 
 dependencies {
 
     //Added akka http
-    compile "com.typesafe.akka:akka-http_$scalaVersion:10.0.9"
+    compile "com.typesafe.akka:akka-http_$scalaVersion:$akkaHttpVersion"
     compile "com.typesafe.akka:akka-stream_$scalaVersion:$akkaVersion"
-
-    //JSON support
-    compile "com.typesafe.akka:akka-http-spray-json_$scalaVersion:10.0.9"
+    //JSON akka http support
+    compile "com.typesafe.akka:akka-http-spray-json_$scalaVersion:$akkaHttpVersion"
+    //Akka HTTP testing support
+    testCompile "com.typesafe.akka:akka-http-testkit_$scalaVersion:$akkaHttpVersion"
 
 
     compile "org.scala-lang:scala-library:$scalaVersion"
