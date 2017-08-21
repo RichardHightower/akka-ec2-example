@@ -2,8 +2,19 @@
 
 ## Testing server
 
+#### Send userId
 ```sh
-curl -v -H "Content-Type: application/json" -X POST -d '{"userId":"1234"}' http://localhost:8080/tags
+curl -v -H "Content-Type: application/json" -X POST -d '{"userId":"1234"}' \
+http://localhost:8080/tags
+```
+#### Send userAlias
+```sh
+curl -v -H "Content-Type: application/json" -X POST -d '{"userAlias":"ABC"}' \
+http://localhost:8080/atags
+```
+#### Output
+```javascript
+{"userAlias":"ABC","tags":[]}`
 ```
 
 ### Docs of note
