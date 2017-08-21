@@ -2,7 +2,6 @@ package com.rick.user
 
 import akka.http.scaladsl.Http.ServerBinding
 import akka.http.scaladsl.model._
-import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.testkit.ScalatestRouteTest
 import org.scalatest.{BeforeAndAfterAll, Matchers, WordSpec}
 
