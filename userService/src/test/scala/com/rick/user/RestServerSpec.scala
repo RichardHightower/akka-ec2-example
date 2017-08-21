@@ -11,7 +11,7 @@ import scala.concurrent.Future
 class RestServerSpec extends WordSpec with Matchers with ScalatestRouteTest
   with JsonSupport with BeforeAndAfterAll {
 
-  var webServerFuture: Future[ServerBinding] = null
+  var webServerFuture: Future[ServerBinding] = _
 
   override def beforeAll: Unit = {
     webServerFuture = RestServer.start()
