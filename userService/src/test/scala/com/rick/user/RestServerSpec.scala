@@ -31,7 +31,6 @@ class RestServerSpec extends WordSpec with Matchers with ScalatestRouteTest
   "The RestService" should {
 
 
-
     "accept a post of userAlias and return a UserResponse" in {
 
       val jsonRequest ="""{"userAlias":"ABC"}"""
@@ -42,7 +41,6 @@ class RestServerSpec extends WordSpec with Matchers with ScalatestRouteTest
         responseAs[UserResponse] should equal(UserResponse("ABC", Seq.empty[String]))
       }
     }
-
 
 
     "accept a post of userId and return a UserResponse" in {
