@@ -29,35 +29,29 @@ class RestServerSpec extends WordSpec with Matchers with ScalatestRouteTest
       entity = HttpEntity(MediaTypes.`application/json`, jsonRequest))
   }
 
-  "The service" should {
+  "The RestService" should {
+
+
 
     "accept a post of userAlias and return a UserResponse" in {
 
       val jsonRequest ="""{"userAlias":"ABC"}"""
-
       val postRequest = createPostRequest("/atags", jsonRequest)
 
-      val route = Route.seal(RestServer.route)
-
-      postRequest ~> route ~> check {
+      postRequest ~> RestServer.route ~> check {
         status should equal(StatusCodes.OK)
         responseAs[UserResponse] should equal(UserResponse("ABC", Seq.empty[String]))
       }
-
     }
-  }
 
-  "The service" should {
+
 
     "accept a post of userId and return a UserResponse" in {
 
       val jsonRequest ="""{"userId":"1234"}"""
-
       val postRequest = createPostRequest("/tags", jsonRequest)
 
-      val route = Route.seal(RestServer.route)
-
-      postRequest ~> route ~> check {
+      postRequest ~> RestServer.route ~> check {
         status should equal(StatusCodes.OK)
         responseAs[UserResponse] should equal(UserResponse("ABC", Seq.empty[String]))
       }
