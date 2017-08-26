@@ -60,3 +60,6 @@ http://doc.akka.io/docs/akka-http/current/scala/http/common/json-support.html#ak
 
 Testing examples
 http://blog.madhukaraphatak.com/akka-http-testing/
+
+Remoting example
+https://alvinalexander.com/scala/simple-akka-actors-remote-example

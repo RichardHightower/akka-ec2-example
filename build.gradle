@@ -1,0 +1,5 @@
+ext {
+    scalaVersion = "2.12"
+    akkaVersion = "2.5.3"
+    akkaHttpVersion = "10.0.9"
+}

@@ -3,8 +3,13 @@ package com.rick.user
 import akka.actor.{Actor, ActorRef, ActorSystem, Props}
 
 object UserAliasActor {
-  def apply(system: ActorSystem): ActorRef = {
-    system.actorOf(props())
+  def apply(system: ActorSystem, localOnly: Boolean = false): ActorRef = {
+
+    if (localOnly) {
+      system.actorOf(props())
+    } else {
+      system.actorOf(props(), "userAlias")
+    }
   }
 
   def props(): Props = Props[UserAliasActor]
@@ -22,7 +27,7 @@ class UserAliasActor extends Actor {
     ("ABC", "1234")
   )
 
-  def receive = {
+  def receive: Receive = {
     //Grab the sender (for tell and ask), and send a response from the map.
     // sender refers to actor who sent the message.
     case UserId(userId) =>

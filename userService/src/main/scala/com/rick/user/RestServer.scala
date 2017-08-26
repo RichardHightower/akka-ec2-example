@@ -1,13 +1,15 @@
 package com.rick.user
 
-import akka.actor.{ActorRef, ActorSystem}
+import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.Http.ServerBinding
 import akka.http.scaladsl.server.Directives._
+import akka.http.scaladsl.server.Route
 import akka.stream.ActorMaterializer
 import akka.util.Timeout
+import com.typesafe.config.ConfigFactory
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContextExecutor, Future}
 //Import ask pattern
 import akka.pattern.ask
 
@@ -15,26 +17,55 @@ import scala.concurrent.duration._
 import scala.io.StdIn
 
 //Enable Scala postfix operations
+import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
+import spray.json._
+
 import scala.language.postfixOps
 
+trait JsonSupport extends SprayJsonSupport with DefaultJsonProtocol {
+  implicit val userIdFormat: RootJsonFormat[UserId] = jsonFormat1(UserId)
+  implicit val userAliasFormat: RootJsonFormat[UserAlias] = jsonFormat1(UserAlias)
+  implicit val userResponseFormat: RootJsonFormat[UserResponse] = jsonFormat2(UserResponse)
+}
 
-object RestServer extends JsonSupport {
+object RestServer extends JsonSupport with App {
 
-  implicit val system = ActorSystem("user-microservice")
+  val config = if (args.length > 0) {
+    ConfigFactory.load(args(0))
+  } else {
+    ConfigFactory.load()
+  }
+
+
+  implicit val system = ActorSystem("user-microservice", config)
   implicit val materializer = ActorMaterializer()
 
-  val userAliasActorRef: ActorRef = UserAliasActor(system)
+  //val userAliasActorRef: ActorRef = UserAliasActor(system)
+  val userAliasUrl = config.getConfig("user-alias").getString("url")
+  println(s"connecting to remote server $userAliasUrl")
+  val userAliasActor = system.actorSelection(userAliasUrl)
   implicit val timeout = Timeout(5 seconds)
 
 
   // needed for the future flatMap/onComplete in the end
-  implicit val executionContext = system.dispatcher
+  implicit val executionContext: ExecutionContextExecutor = system.dispatcher
+
+  val bindingFuture = start()
+
+  println(s"Server online at http://localhost:8080/\nPress RETURN to stop...")
+  StdIn.readLine() // let it run until user presses return
+
+  stop(bindingFuture)
 
 
-  val route = path("tags") {
+  def start(): Future[ServerBinding] = {
+    Http().bindAndHandle(route, "localhost", 8080)
+  }
+
+  def route: Route = path("tags") {
     post {
       entity(as[UserId]) { userId =>
-        val future = (userAliasActorRef ? userId).mapTo[UserResponse]
+        val future = (userAliasActor ? userId).mapTo[UserResponse]
         onSuccess(future) { response: UserResponse =>
           complete(response)
         }
@@ -43,7 +74,7 @@ object RestServer extends JsonSupport {
   } ~ path("atags") {
     post {
       entity(as[UserAlias]) { userAlias =>
-        val future = (userAliasActorRef ? userAlias).mapTo[UserResponse]
+        val future = (userAliasActor ? userAlias).mapTo[UserResponse]
         onSuccess(future) { response: UserResponse =>
           complete(response)
         }
@@ -51,22 +82,7 @@ object RestServer extends JsonSupport {
     }
   }
 
-  def main(args: Array[String]) {
-    val bindingFuture = start()
-
-
-    println(s"Server online at http://localhost:8080/\nPress RETURN to stop...")
-    StdIn.readLine() // let it run until user presses return
-
-    stop(bindingFuture)
-  }
-
-
-  def start(): Future[ServerBinding] = {
-    Http().bindAndHandle(route, "localhost", 8080)
-  }
-
-  def stop(bindingFuture: Future[ServerBinding]) = {
+  def stop(bindingFuture: Future[ServerBinding]): Unit = {
     bindingFuture
       .flatMap(_.unbind()) // trigger unbinding from the port
       .onComplete(_ => system.terminate()) // and shutdown when done
