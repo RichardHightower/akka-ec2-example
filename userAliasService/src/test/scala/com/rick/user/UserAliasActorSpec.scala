@@ -42,7 +42,7 @@ class UserAliasActorSpec(_system: ActorSystem)
     //mocks an actor
     val responseActor = testProbe.ref
     //response actor
-    val userAliasActorRef: ActorRef = UserAliasActor(system)
+    val userAliasActorRef: ActorRef = UserAliasActor(system, localOnly = true)
 
     // Pass the UserId 1234 and expect UserResponse ("ABC", empty)
     userAliasActorRef.tell(UserId("1234"), responseActor)
@@ -56,7 +56,7 @@ class UserAliasActorSpec(_system: ActorSystem)
     """respond with an
     empty set of tags and alias 'ABC' for user alias 'ABC'""" in {
 
-    val userAliasActorRef: ActorRef = UserAliasActor(system)
+    val userAliasActorRef: ActorRef = UserAliasActor(system, localOnly = true)
 
     // Pass the UserAlias ABC and expect UserResponse ("ABC", empty)
 

@@ -1,0 +1,20 @@
+apply plugin: 'scala'
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+
+    compile project(':userModel')
+
+    //Added akka remote
+    compile "com.typesafe.akka:akka-remote_$scalaVersion:$akkaVersion"
+
+    compile "org.scala-lang:scala-library:$scalaVersion"
+    compile "com.typesafe.akka:akka-actor_$scalaVersion:$akkaVersion"
+
+    testCompile "com.typesafe.akka:akka-testkit_$scalaVersion:$akkaVersion"
+    testCompile "org.scalatest:scalatest_$scalaVersion:3.0.3"
+}
