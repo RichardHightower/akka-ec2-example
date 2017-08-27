@@ -52,10 +52,14 @@ object RestServer extends JsonSupport with App {
 
   val bindingFuture = start()
 
-  println(s"Server online at http://localhost:8080/\nPress RETURN to stop...")
-  StdIn.readLine() // let it run until user presses return
+  println(s"Server online at http://localhost:8080/")
 
-  stop(bindingFuture)
+  sys.addShutdownHook({
+    stop(bindingFuture)
+  })
+
+
+
 
 
   def start(): Future[ServerBinding] = {

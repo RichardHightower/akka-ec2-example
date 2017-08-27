@@ -1,4 +1,5 @@
 apply plugin: 'scala'
+
 repositories {
     mavenCentral()
     jcenter()
