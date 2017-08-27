@@ -1,5 +1,16 @@
 apply plugin: 'scala'
 
+apply plugin: 'application'
+
+mainClassName = "com.rick.user.RunServer"
+
+startScripts {
+    applicationName = 'run.sh'
+}
+installDist {
+    destinationDir = file('build/install/app')
+}
+
 repositories {
     mavenCentral()
     jcenter()
@@ -8,6 +19,8 @@ repositories {
 dependencies {
 
     compile project(':userModel')
+
+    compile "com.github.romix.akka:akka-kryo-serialization_$scalaVersion:0.5.2"
 
     //Added akka remote
     compile "com.typesafe.akka:akka-remote_$scalaVersion:$akkaVersion"

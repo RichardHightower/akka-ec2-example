@@ -27,8 +27,8 @@ object RunServer extends App {
   val userAliasActorRef: ActorRef = UserAliasActor(system)
 
 
-  println(">>> Press ENTER to exit <<<")
-  StdIn.readLine()
-
+  sys.addShutdownHook({
+    system.terminate()
+  })
 
 }
