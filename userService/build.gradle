@@ -22,9 +22,6 @@ dependencies {
 
     compile project(':userModel')
 
-    compile "com.github.romix.akka:akka-kryo-serialization_$scalaVersion:0.5.1"
-
-
     //Added akka http
     compile "com.typesafe.akka:akka-http_$scalaVersion:$akkaHttpVersion"
     compile "com.typesafe.akka:akka-stream_$scalaVersion:$akkaVersion"

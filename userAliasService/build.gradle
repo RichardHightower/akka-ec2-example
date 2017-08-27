@@ -20,8 +20,6 @@ dependencies {
 
     compile project(':userModel')
 
-    compile "com.github.romix.akka:akka-kryo-serialization_$scalaVersion:0.5.2"
-
     //Added akka remote
     compile "com.typesafe.akka:akka-remote_$scalaVersion:$akkaVersion"
 
