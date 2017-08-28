@@ -20,6 +20,8 @@ object RunServer extends App {
   implicit val system = ActorSystem("UserAliasServer", config)
   implicit val materializer = ActorMaterializer()
 
+  println("Starting user alias service")
+
 
   // needed for the future flatMap/onComplete in the end
   implicit val executionContext: ExecutionContextExecutor = system.dispatcher

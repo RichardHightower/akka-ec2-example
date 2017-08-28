@@ -7,7 +7,7 @@ import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import akka.stream.ActorMaterializer
 import akka.util.Timeout
-import com.typesafe.config.ConfigFactory
+import com.typesafe.config.{Config, ConfigFactory, ConfigResolveOptions}
 
 import scala.concurrent.{ExecutionContextExecutor, Future}
 //Import ask pattern
@@ -50,20 +50,21 @@ object RestServer extends JsonSupport with App {
   // needed for the future flatMap/onComplete in the end
   implicit val executionContext: ExecutionContextExecutor = system.dispatcher
 
-  val bindingFuture = start()
+  val bindingFuture = start(config)
 
-  println(s"Server online at http://localhost:8080/")
+
 
   sys.addShutdownHook({
     stop(bindingFuture)
   })
 
 
-
-
-
-  def start(): Future[ServerBinding] = {
-    Http().bindAndHandle(route, "localhost", 8080)
+  def start(config : Config): Future[ServerBinding] = {
+    val bindConf = config.getConfig("bind-rest")
+    val host = bindConf.getString("host")
+    val port = bindConf.getString("port")
+    println(s"Starting server at http://$host:$port/")
+    Http().bindAndHandle(route, host, port.toInt)
   }
 
   def route: Route = path("tags") {

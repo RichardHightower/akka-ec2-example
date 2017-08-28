@@ -1,0 +1,12 @@
+version: '3'
+services:
+  user-alias-service:
+    build: userAliasService
+    ports:
+     - "7000:7000"
+  user-service:
+    build: userService
+    ports:
+     - "8080:8080"
+  redis:
+    image: "redis:alpine"
