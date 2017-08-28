@@ -59,17 +59,12 @@ object RestServer extends JsonSupport with App {
   })
 
 
-
-
-
   def start(config : Config): Future[ServerBinding] = {
-    val bindConf = config.resolve().getConfig("bind-rest")
+    val bindConf = config.getConfig("bind-rest")
     val host = bindConf.getString("host")
     val port = bindConf.getString("port")
     println(s"Starting server at http://$host:$port/")
     Http().bindAndHandle(route, host, port.toInt)
-
-
   }
 
   def route: Route = path("tags") {
